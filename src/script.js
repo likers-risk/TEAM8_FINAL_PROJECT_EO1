@@ -1,5 +1,6 @@
 // Game state
 let score = 0;
+let highScore = localStorage.getItem("sipaHighScore") || 0; // Load high score
 let gameActive = false; // Start as false
 let gameStarted = false; // Track if game has started
 let lastKickTime = 0;
@@ -9,7 +10,11 @@ const kickCooldown = 100; // Shorter cooldown - kick faster!
 let isKicking = false;
 
 // DOM elements
-let scoreDisplay, gameOverDisplay, restartBtn, instructionsDisplay;
+let scoreDisplay,
+  highScoreDisplay,
+  gameOverDisplay,
+  restartBtn,
+  instructionsDisplay;
 
 // Game entities
 let rig, camera, sipa;
@@ -30,9 +35,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function initGame() {
   scoreDisplay = document.getElementById("score");
+  highScoreDisplay = document.getElementById("highScore");
   gameOverDisplay = document.getElementById("gameOver");
   restartBtn = document.getElementById("restartBtn");
   instructionsDisplay = document.getElementById("instructions");
+
+  // Display high score
+  highScoreDisplay.textContent = "High Score: " + highScore;
 
   rig = document.getElementById("rig");
   camera = document.getElementById("camera");
@@ -145,8 +154,17 @@ function gameLoop() {
 
 function endGame() {
   gameActive = false;
+
+  // Update high score if current score is higher
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("sipaHighScore", highScore);
+    gameOverDisplay.innerHTML = `🎉 NEW HIGH SCORE! 🎉<br><span style="font-size: 28px;">Score: ${score}</span><br><button id="restartBtn" onclick="location.reload()">Play Again</button>`;
+  } else {
+    gameOverDisplay.innerHTML = `Game Over!<br><span style="font-size: 28px;">Score: ${score}</span><br><span style="font-size: 20px;">High Score: ${highScore}</span><br><button id="restartBtn" onclick="location.reload()">Play Again</button>`;
+  }
+
   gameOverDisplay.style.display = "block";
-  gameOverDisplay.innerHTML = `Game Over!<br><span style="font-size: 28px;">Final Score: ${score}</span><br><button id="restartBtn" onclick="location.reload()">Play Again</button>`;
   sipa.setAttribute(
     "animation",
     "property: position; to: 0 0 -2; dur: 1000; easing: easeInQuad"
