@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <link rel="stylesheet" href="src/style.css" />
+    <title>Sipa - Filipino Game</title>
+  </head>
+  <body>
+    <div id="ui">
+      <div id="score">Score: 0</div>
+      <div id="instructions">Press SPACEBAR to start!</div>
+      <div id="gameOver">
+        Game Over!<br />
+        <button id="restartBtn">Play Again</button>
+      </div>
+    </div>
+
+    <a-scene>
+      <!-- Camera rig with first-person controls -->
+      <a-entity id="rig" position="0 0 3">
+        <a-entity
+          id="camera"
+          camera
+          position="0 1.6 0"
+          look-controls
+          wasd-controls="acceleration:80; fly:false"
+        >
+          <a-cursor
+            color="#FFD700"
+            opacity="1"
+            scale="2 2 2"
+            raycaster="objects: .kickable; far: 20; showLine: true"
+            fuse="false"
+          ></a-cursor>
+        </a-entity>
+      </a-entity>
+
+      <!-- Lighting -->
+      <a-light type="ambient" color="#BBB"></a-light>
+      <a-light type="directional" position="2 4 2" intensity="0.8"></a-light>
+      <a-light
+        type="point"
+        position="-2 3 -2"
+        intensity="0.5"
+        color="#FFA500"
+      ></a-light>
+
+      <!-- Sky -->
+      <a-sky color="#87CEEB"></a-sky>
+
+      <!-- Ground -->
+      <a-plane
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="20"
+        height="20"
+        color="#4a7c2c"
+        shadow="receive: true"
+      >
+        <a-entity position="0 0.01 0">
+          <a-circle
+            position="0 0 -3"
+            radius="0.3"
+            color="#90EE90"
+            opacity="0.3"
+          ></a-circle>
+          <a-circle
+            position="2 0 -2"
+            radius="0.25"
+            color="#90EE90"
+            opacity="0.3"
+          ></a-circle>
+          <a-circle
+            position="-1.5 0 -4"
+            radius="0.35"
+            color="#90EE90"
+            opacity="0.3"
+          ></a-circle>
+        </a-entity>
+      </a-plane>
+
+      <!-- Sipa (shuttlecock) - positioned near the feet -->
+      <a-entity id="sipa" class="kickable" position="0 3 -2" scale="3 3 3">
+        <!-- Invisible clickable box around the Sipa -->
+        <a-box
+          class="kickable"
+          width="0.5"
+          height="0.8"
+          depth="0.5"
+          opacity="0"
+          position="0 0.2 0"
+        ></a-box>
+
+        <a-cylinder
+          class="kickable"
+          radius="0.08"
+          height="0.02"
+          color="#C0C0C0"
+          shadow="cast: true"
+        ></a-cylinder>
+        <a-cylinder
+          class="kickable"
+          position="0 0.02 0"
+          radius="0.06"
+          height="0.02"
+          color="#DAA520"
+        ></a-cylinder>
+        <a-cone
+          class="kickable"
+          position="0 0.15 0"
+          radius-bottom="0.08"
+          radius-top="0.01"
+          height="0.3"
+          color="#FF1744"
+          opacity="0.8"
+          shadow="cast: true"
+        ></a-cone>
+        <a-cone
+          class="kickable"
+          position="0 0.15 0"
+          radius-bottom="0.08"
+          radius-top="0.01"
+          height="0.3"
+          color="#FFFFFF"
+          opacity="0.6"
+          rotation="0 60 0"
+        ></a-cone>
+        <a-cone
+          class="kickable"
+          position="0 0.15 0"
+          radius-bottom="0.08"
+          radius-top="0.01"
+          height="0.3"
+          color="#0038A8"
+          opacity="0.6"
+          rotation="0 120 0"
+        ></a-cone>
+        <a-sphere
+          class="kickable"
+          position="0 0 0"
+          radius="0.05"
+          color="#FFD700"
+          material="emissive: #FFD700; emissiveIntensity: 0.5"
+        ></a-sphere>
+        <a-animation
+          attribute="rotation"
+          dur="2000"
+          to="0 360 0"
+          easing="linear"
+          repeat="indefinite"
+        ></a-animation>
+      </a-entity>
+
+      <!-- Decorative boxes -->
+      <a-box
+        position="-3 0.5 -5"
+        width="1"
+        height="1"
+        depth="1"
+        color="#8B4513"
+        shadow="cast: true"
+      ></a-box>
+      <a-box
+        position="3 0.5 -5"
+        width="1"
+        height="1"
+        depth="1"
+        color="#8B4513"
+        shadow="cast: true"
+      ></a-box>
+
+      <!-- Clouds -->
+      <a-entity position="0 8 -10">
+        <a-sphere
+          position="0 0 0"
+          radius="1"
+          color="#FFFFFF"
+          opacity="0.7"
+        ></a-sphere>
+        <a-sphere
+          position="1 0.2 0"
+          radius="0.8"
+          color="#FFFFFF"
+          opacity="0.7"
+        ></a-sphere>
+        <a-sphere
+          position="-0.8 0.1 0"
+          radius="0.7"
+          color="#FFFFFF"
+          opacity="0.7"
+        ></a-sphere>
+      </a-entity>
+
+      <a-entity position="4 7 -8">
+        <a-sphere
+          position="0 0 0"
+          radius="0.9"
+          color="#FFFFFF"
+          opacity="0.6"
+        ></a-sphere>
+        <a-sphere
+          position="0.8 0.1 0"
+          radius="0.7"
+          color="#FFFFFF"
+          opacity="0.6"
+        ></a-sphere>
+      </a-entity>
+    </a-scene>
+
+    <script src="src/script.js"></script>
+  </body>
+</html>
